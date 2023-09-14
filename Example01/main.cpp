@@ -25,7 +25,7 @@ void PlaySound()
 		return;
 	}
 
-	result = system->createSound("soundfile.wav", FMOD_DEFAULT, 0, &sound);
+	result = system->createSound("audio/jaguar.wav", FMOD_DEFAULT, 0, &sound);
 	if (result != FMOD_OK)
 	{
 		printf("Failed to load the sound file: soundfile.wav\n");
@@ -47,6 +47,15 @@ void PlaySound()
 	printf("Sound playing, press ESC to quit . . .");
 	while (true)
 	{
+		// Let FMOD update the audio buffer with the sounds that
+		// are playing. This also does a lot more behind the 
+		// scenes
+		result = system->update();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to update!\n");
+		}
+
 		// Wait here until user presses ESCAPE
 		// std::cin >>  // This is a blocking call
 
