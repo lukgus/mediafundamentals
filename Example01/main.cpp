@@ -2,7 +2,7 @@
 #include <iostream>	// printf
 #include <conio.h>	// _kbhit, _getch
 
-void PlaySound()
+void PlaySound(const char* soundfile)
 {
 	FMOD::System* system = nullptr;
 	FMOD::Sound* sound = nullptr;
@@ -20,17 +20,31 @@ void PlaySound()
 	if (result != FMOD_OK)
 	{
 		printf("Failed to initialize the system!\n");
-		// TODO: FMOD Cleanup system
-		// 'delete system' or see if there is a FMOD::System_Destroy(..)
+		// Cleanup
+		result = system->close();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to close system!\n");
+		}
 		return;
 	}
 
-	result = system->createSound("audio/jaguar.wav", FMOD_DEFAULT, 0, &sound);
+	result = system->createSound(soundfile, FMOD_DEFAULT, 0, &sound);
 	if (result != FMOD_OK)
 	{
 		printf("Failed to load the sound file: soundfile.wav\n");
-		// TODO: FMOD Cleanup system
-		// 'delete system' or see if there is a FMOD::System_Destroy(..)
+		// Cleanup
+		result = sound->release();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to release sound!\n");
+		}
+
+		result = system->close();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to close system!\n");
+		}
 		return;
 	}
 
@@ -38,9 +52,24 @@ void PlaySound()
 	if (result != FMOD_OK)
 	{
 		printf("Failed to play the sound!\n");
-		// TODO: FMOD Cleanup system
-		// 'delete system' or see if there is a FMOD::System_Destroy(..)
-		// 'delete sound' or see if there is a FMOD::Sound_Destroy(..)
+		// Cleanup
+		result = sound->release();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to release sound!\n");
+		}
+
+		result = system->close();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to close system!\n");
+		}
+
+		result = system->release();
+		if (result != FMOD_OK)
+		{
+			printf("Failed to release system!\n");
+		}
 		return;
 	}
 
@@ -70,6 +99,25 @@ void PlaySound()
 			}
 		}
 	}
+
+	// Cleanup
+	result = sound->release();
+	if (result != FMOD_OK)
+	{
+		printf("Failed to release sound!\n");
+	}
+
+	result = system->close();
+	if (result != FMOD_OK)
+	{
+		printf("Failed to close system!\n");
+	}
+
+	result = system->release();
+	if (result != FMOD_OK)
+	{
+		printf("Failed to release system!\n");
+	}
 }
 
 
@@ -82,7 +130,9 @@ void PlaySound()
 // Example01.exe with some parameters (4, {"Example01", "with", "some", "Parameters"})
 int main(int argc, char** argv)
 {
-	PlaySound();
+	PlaySound("audio/jaguar.wav");
+	PlaySound("audio/singing.wav");
+	PlaySound("audio/swish.wav");
 
 	// 0 means successful, anything else is typically an "error"
 	return 0;
