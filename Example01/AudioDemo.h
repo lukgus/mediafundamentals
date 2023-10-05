@@ -18,6 +18,6 @@ private:
 
 	inline void PrintInfo() const;
 
-	gdpAudioNamespace AudioManager* m_AudioManager;
+	audio::AudioManager* m_AudioManager;
 	bool m_Running;
 };

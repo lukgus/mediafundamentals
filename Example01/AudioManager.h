@@ -7,69 +7,74 @@
 #include <map>
 #include <vector>
 
-gdpAudioNamespace_Begin
-
-// Move this
-struct Audio
+namespace audio
 {
-	const char* name;
-	FMOD::Sound* Audio;
-};
+	// Move this
+	struct Audio
+	{
+		const char* name;
+		FMOD::Sound* Audio;
+	};
 
-struct Channel
-{
-	const char* name;
-	FMOD::Channel* fmodChannel;
-	float volume;
-	float pitch;
-	float pan;
-	bool playing;
-};
+	struct Channel
+	{
+		const char* name;
+		FMOD::Channel* fmodChannel;
+		float volume;
+		float pitch;
+		float pan;
+		bool playing;
+	};
 
-// This can be a singleton, but we are not focusing on 
-// design patterns at the moment.
-class AudioManager
-{
-public:
-	// Constructor
-	AudioManager();
+	// This can be a singleton, but we are not focusing on 
+	// design patterns at the moment.
+	class AudioManager
+	{
+	public:
+		// Constructor
+		AudioManager();
 
-	// Destructor (Gets called on delete)
-	~AudioManager();
+		// Destructor (Gets called on delete)
+		~AudioManager();
 
-	void Initialize();
-	void Update();
-	void Destroy();
+		// System calls
+		void Initialize();
+		void Update();
+		void Destroy();
 
-	void LoadAudioStream(const char* source);
-	void LoadAudio(const char* file);
-	int PlayAudio(const char* AudioName);
+		// Loading Audio 
+		void LoadAudioStream(const char* source);
+		void LoadAudio(const char* file);
 
-	void SetChannelVolume(int id, float value);
-	void SetChannelPitch(int id, float value);
-	void SetChannelPan(int id, float value);
+		// Play audio
+		int PlayAudio(const char* AudioName);
 
-	bool GetChannelPlaying(int id);
-	void GetPlaybackPosition(int id, unsigned int& value);
+		// Modifying Channel Values
+		void SetChannelVolume(int id, float value);
+		void SetChannelPitch(int id, float value);
+		void SetChannelPan(int id, float value);
+
+		// Retrieving information
+		bool GetChannelPlaying(int id);
+		void GetPlaybackPosition(int id, unsigned int& value);
 
 
-	// void SetChannelBLAHBLAH(int id, float value);
-	// Also add GetChannelBLABLA(int id, float &value);
+		// void SetChannelBLAHBLAH(int id, float value);
+		// Also add GetChannelBLABLA(int id, float &value);
 
 
-	void PrintInfo() const;
+		void PrintInfo() const;
 
-private:
+	private:
 
-	bool m_Initialized = false;
+		bool m_Initialized = false;
 
-	std::map<const char*, Audio*> m_AudioMap;
-	std::vector<Channel*> m_ChannelList;
 
-	int m_NextChannelId = 0;
+		std::map<const char*, Audio*> m_AudioMap;	// This is our cache
+		std::vector<Channel*> m_ChannelList;		// Maintaint a list of channels 
 
-	FMOD::System* m_System = nullptr;
-	FMOD_RESULT m_Result;
-};
+		int m_NextChannelId = 0;					// The next channel Id that we can return
 
-gdpAudioNamespace_End
+		FMOD::System* m_System = nullptr;
+	};
+}

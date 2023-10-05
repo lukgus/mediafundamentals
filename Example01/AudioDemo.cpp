@@ -11,10 +11,9 @@ void AudioDemo::Prepare()
 	m_AudioManager->LoadAudio("audio/jaguar.wav");
 	m_AudioManager->LoadAudio("audio/singing.wav");
 	m_AudioManager->LoadAudio("audio/swish.wav");
-	m_AudioManager->LoadAudio("audio/output.mp3");
-	m_AudioManager->LoadAudio("audio/output1.mp3");
-	m_AudioManager->LoadAudio("audio/output2.mp3");
-	m_AudioManager->LoadAudio("audio/output3.mp3");
+	m_AudioManager->LoadAudio("audio/awesomeness.wav");
+
+	printf("Press [1,2,3,4] to play a sound.\n");
 }
 
 void AudioDemo::Shutdown()
@@ -38,12 +37,10 @@ void AudioDemo::RunDemo()
 			if (key == '1')
 			{
 				channel = m_AudioManager->PlayAudio("audio/jaguar.wav");
-				m_AudioManager->SetChannelPitch(channel, 2.f);
 			}
 			else if (key == '2')
 			{
 				channel = m_AudioManager->PlayAudio("audio/singing.wav");
-				m_AudioManager->SetChannelPitch(channel, 0.5f);
 			}
 			else if (key == '3')
 			{

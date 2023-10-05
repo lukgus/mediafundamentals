@@ -1,0 +1,14 @@
+{
+	"audiofiles": [
+		{
+			"name": "jaguar",
+			"type": "streaming",
+			"source": "audio/jaguar.wav"
+		},
+		{
+			"name": "sing",
+			"type": "sampled",
+			"source": "audio/sing.wav"
+		}
+	]
+}
